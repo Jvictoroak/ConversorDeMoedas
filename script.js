@@ -56,3 +56,43 @@ function converter() {
         }
     })();
 }
+async function fetchUniqueCurrencies() {
+    // URL para obter pares de moedas disponíveis
+    const API_URL = 'https://economia.awesomeapi.com.br/json/available';
+
+    try {
+        // Faz uma requisição para obter os dados das moedas
+        const response = await fetch(API_URL);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        // Converte a resposta para JSON
+        const data = await response.json();
+
+        // Cria um conjunto para armazenar moedas únicas
+        const uniqueCurrencies = new Set();
+
+        // Itera sobre cada chave no objeto de dados
+        for (const key in data) {
+            if (data.hasOwnProperty(key)) {
+                // Extrai as moedas do par de moedas, por exemplo "USDBRL"
+                const [fromCurrency, toCurrency] = key.match(/[A-Z]{3}/g);
+
+                // Adiciona as moedas ao conjunto (o Set garante que sejam únicas)
+                uniqueCurrencies.add(fromCurrency);
+                uniqueCurrencies.add(toCurrency);
+            }
+        }
+
+        // Converte o Set para um array e exibe as moedas únicas
+        const uniqueCurrenciesArray = Array.from(uniqueCurrencies);
+        console.log('Moedas únicas:', uniqueCurrenciesArray);
+
+    } catch (error) {
+        console.error('Erro ao acessar a AwesomeAPI:', error);
+    }
+}
+
+// Chama a função para obter e listar as moedas únicas
+fetchUniqueCurrencies();
