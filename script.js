@@ -3,7 +3,7 @@ async function convertCurrency(from, to, amount) {
     // Monta a URL da API com base nas moedas de origem e destino
     const API_URL = `https://economia.awesomeapi.com.br/json/last/${from}-${to}`;
 
-    try {
+    try { 
         // Faz uma requisição HTTP GET para a URL da API
         const response = await fetch(API_URL);
 
@@ -36,15 +36,19 @@ async function convertCurrency(from, to, amount) {
     }
 }
 
-// Exemplo de uso da função, executado imediatamente
-function converter() {
-    (async () => {
-        moeda = document.getElementById("moeda").value
-        moedaConvertida = document.getElementById("moedaConvertida").value
-        valor = document.getElementById("valor").value
-        // Chama a função convertCurrency para converter 100 USD para BRL
-        const result = await convertCurrency(moeda, moedaConvertida, valor);
-        // const result = await convertCurrency('USD', 'BRL', 100);
+// Função para converter e exibir o resultado
+async function converter() {
+    try {
+        const moedaNaoConvertida = document.getElementById("moedaNaoConvertida").value;
+        const moedaConvertida = document.getElementById("moedaConvertida").value;
+        const valor = parseFloat(document.getElementById("valor").value);
+
+        if (isNaN(valor)) {
+            throw new Error('O valor deve ser um número válido.');
+        }
+
+        // Chama a função convertCurrency para converter o valor
+        const result = await convertCurrency(moedaNaoConvertida, moedaConvertida, valor);
 
         // Verifica se a conversão foi bem-sucedida
         if (result) {
@@ -54,8 +58,12 @@ function converter() {
             // Se não, imprime uma mensagem de erro
             console.log('Erro ao realizar a conversão.');
         }
-    })();
+    } catch (error) {
+        console.error('Erro ao converter moeda:', error);
+    }
 }
+
+// Função assíncrona para obter e listar moedas únicas
 async function fetchUniqueCurrencies() {
     // URL para obter pares de moedas disponíveis
     const API_URL = 'https://economia.awesomeapi.com.br/json/available';
@@ -84,15 +92,45 @@ async function fetchUniqueCurrencies() {
                 uniqueCurrencies.add(toCurrency);
             }
         }
-
-        // Converte o Set para um array e exibe as moedas únicas
-        const uniqueCurrenciesArray = Array.from(uniqueCurrencies);
-        console.log('Moedas únicas:', uniqueCurrenciesArray);
-
+        // Converte o Set para um array e retorna as moedas únicas
+        return Array.from(uniqueCurrencies);
     } catch (error) {
         console.error('Erro ao acessar a AwesomeAPI:', error);
+        return []; // Retorna um array vazio em caso de erro
     }
 }
 
-// Chama a função para obter e listar as moedas únicas
-fetchUniqueCurrencies();
+// Função principal para inicializar o select com moedas únicas
+async function main() {
+    try {
+        // Obtém o elemento <select> pelo ID
+        const moedaConvertida = document.getElementById('moedaNaoConvertida');
+        const moedaNaoConvertida = document.getElementById('moedaConvertida');
+
+        // Obtém o array de moedas únicas
+        const uniqueCurrenciesArray = await fetchUniqueCurrencies();
+
+        // Verifica se o array de moedas únicas é válido
+        if (Array.isArray(uniqueCurrenciesArray)) {
+            // Itera sobre o array de moedas únicas
+            uniqueCurrenciesArray.forEach(currency => {
+                // Cria um novo elemento <option>
+                const optionElement = document.createElement('option');
+                optionElement.value = currency; // Define o valor da opção
+                optionElement.textContent = currency; // Define o texto visível da opção
+                
+                // Adiciona a opção ao <select>
+                moedaNaoConvertida.appendChild(optionElement.cloneNode(true));
+                moedaConvertida.appendChild(optionElement.cloneNode(true));
+                
+            });
+        } else {
+            console.error('Não foi possível obter moedas únicas.');
+        }
+    } catch (error) {
+        console.error('Erro ao obter moedas:', error);
+    }
+}
+
+// Chama a função principal
+main();
