@@ -1,4 +1,4 @@
-// main.js
+// Importar funções necessárias
 import { convertCurrency } from './currencyConverter.js';
 import { fetchUniqueCurrencies } from './currencyFetcher.js';
 
@@ -50,8 +50,8 @@ async function main() {
     }
 }
 
-// Chama a função principal
+// Inicializar o script
 main();
 
-// Adiciona um ouvinte de evento ao botão de conversão
-document.getElementById("convertButton").addEventListener("click", converter);
+// Definir a função converter no escopo global para que possa ser acessada pelo HTML
+window.converter = converter;
