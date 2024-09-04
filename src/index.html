@@ -8,17 +8,18 @@
 </head>
 
 <body>
-    <form>
-        <select id="moedaNaoConvertida">
-            <option>-</option>
-        </select>
-        <select id="moedaConvertida">
-            <option>-</option>
-        </select>
-        <input id="valor" value="">
-        <button type="button" onclick="converter()">converter</button>
-    </form>
+    <h1>Conversor de Moedas</h1>
+    <select id="moedaNaoConvertida">
+        <option>-</option>
+    </select>
+    <select id="moedaConvertida">
+        <option>-</option>
+    </select>
+    <input id="valor" value="">
+    <button type="button" onclick="converter()">converter</button>
+    <h2 id="taxaDeCambio"></h2>
+    <h2 id="valorConvertido"></h2>
+    <script type="module" src="/src/components/main.js"></script>
 </body>
-<script type="module" src="/src/components/main.js"></script>
 
 </html>
