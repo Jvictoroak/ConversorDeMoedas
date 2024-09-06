@@ -6,12 +6,15 @@ import { fetchUniqueCurrencies } from './currencyFetcher.js'; // Importa a funç
 async function converter() {
     try {
         // Obtém os valores dos elementos HTML com IDs específicos
-        const moedaNaoConvertida = document.getElementById("moedaNaoConvertida").value; // Obtém o valor da moeda de origem
-        const moedaConvertida = document.getElementById("moedaConvertida").value; // Obtém o valor da moeda de destino
+        const moedaNaoConvertida = document.getElementById("moedaNaoConvertida").value // Obtém o valor da moeda de origem
+        const moedaConvertida = document.getElementById("moedaConvertida").value // Obtém o valor da moeda de destino
         const valor = parseFloat(document.getElementById("valor").value); // Obtém o valor a ser convertido e o transforma em número
+        const conversao = document.getElementById("conversao")
+        const taxaCambio = document.getElementById("taxaDeCambio")
 
         // Verifica se o valor é um número válido
         if (isNaN(valor)) {
+            alert('O valor deve ser um número válido.')
             throw new Error('O valor deve ser um número válido.'); // Lança um erro se o valor não for um número
         }
 
@@ -21,6 +24,9 @@ async function converter() {
         // Verifica se o resultado é válido e exibe o resultado no console
         if (result) {
             console.log(`Converteu ${result.amount} ${result.from} para ${result.convertedAmount} ${result.to} com a taxa de câmbio de ${result.rate}`);
+            conversao.innerHTML = `${result.convertedAmount} ${result.to} `
+            taxaCambio.innerHTML = `${result.rate}`
+            return
         } else {
             console.log('Erro ao realizar a conversão.'); // Exibe uma mensagem de erro se a conversão falhar
         }

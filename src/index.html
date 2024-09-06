@@ -5,21 +5,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ConversorDeMoedas</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <h1>Conversor de Moedas</h1>
-    <select id="moedaNaoConvertida">
-        <option>-</option>
-    </select>
-    <select id="moedaConvertida">
-        <option>-</option>
-    </select>
-    <input id="valor" value="">
-    <button type="button" onclick="converter()">converter</button>
-    <h2 id="taxaDeCambio"></h2>
-    <h2 id="valorConvertido"></h2>
-    <script type="module" src="/src/components/main.js"></script>
+    <section class="main">
+        <h1 class="titulo">Conversor<br> de Moedas</h1>
+        <div class="formulario">
+            <label>Converter:</label>
+            <input class="valor entrada" id="valor" value="">
+            <label>De:</label>
+            <select class="de entrada" id="moedaNaoConvertida">
+                <option>-</option>
+            </select>
+            <label>Para:</label>
+            <select class="para entrada" id="moedaConvertida">
+                <option>-</option>
+            </select>
+            <button class="converter entrada" type="button" onclick="converter()">converter</button>
+        </div>
+        <div class="result">
+            <div>
+                <label>Taxa de Cambio</label>
+                <h2 id="taxaDeCambio">00.00</h2>
+            </div>
+            <div>
+                <label>Valor Convertido</label>
+                <h2 id="conversao">00.00ABC</h2>
+            </div>
+        </div>
+        <script type="module" src="/src/components/main.js"></script>
+    </section>
 </body>
 
 </html>
